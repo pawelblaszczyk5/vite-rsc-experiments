@@ -22,7 +22,7 @@ catalogs:
   stable:
     react: ^19.1.0
     react-dom: ^19.1.0
-    "@hiogawa/vite-rsc": ^0.4.5
+    "@hiogawa/vite-rsc": https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@f58b9a6
   canary:
     react: 19.2.0-canary-06e89951-20250620
     react-dom: 19.2.0-canary-06e89951-20250620

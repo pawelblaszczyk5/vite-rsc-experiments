@@ -1,0 +1,5 @@
+{
+	"extends": "@vite-rsc-experiments/typescript-config/dom-no-build",
+	"compilerOptions": { "jsx": "react-jsx", "types": ["node", "vite/client", "@hiogawa/vite-rsc/types"] },
+	"include": ["src"]
+}

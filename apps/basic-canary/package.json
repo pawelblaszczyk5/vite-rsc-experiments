@@ -1,0 +1,39 @@
+{
+	"name": "@vite-rsc-experiments/basic-canary",
+	"version": "0.0.1",
+	"private": true,
+	"description": "Basic canary template",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/pawelblaszczyk5/vite-rsc-experiments",
+		"directory": "apps/basic-canary"
+	},
+	"sideEffects": false,
+	"type": "module",
+	"imports": {
+		"#src/*": "./src/*"
+	},
+	"scripts": {
+		"build": "vite build",
+		"dev": "vite",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"preview": "vite preview",
+		"typecheck": "tsc --build --noEmit"
+	},
+	"dependencies": {
+		"@hiogawa/vite-rsc": "catalog:canary",
+		"react": "catalog:canary",
+		"react-dom": "catalog:canary"
+	},
+	"devDependencies": {
+		"@types/node": "catalog:",
+		"@types/react": "catalog:",
+		"@types/react-dom": "catalog:",
+		"@vite-rsc-experiments/eslint-config": "workspace:0.0.1",
+		"@vite-rsc-experiments/typescript-config": "workspace:0.0.1",
+		"@vitejs/plugin-react": "catalog:",
+		"vite": "catalog:",
+		"vite-plugin-inspect": "catalog:"
+	}
+}

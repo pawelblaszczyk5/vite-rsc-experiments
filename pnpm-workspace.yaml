@@ -22,15 +22,15 @@ catalogs:
   stable:
     react: ^19.1.0
     react-dom: ^19.1.0
-    "@hiogawa/vite-rsc": https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@f58b9a6
+    "@hiogawa/vite-rsc": https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@54b3dd1
   canary:
     react: 19.2.0-canary-06e89951-20250620
     react-dom: 19.2.0-canary-06e89951-20250620
-    "@hiogawa/vite-rsc": https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@f58b9a6
+    "@hiogawa/vite-rsc": https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@54b3dd1
   experimental:
     react: 0.0.0-experimental-06e89951-20250620
     react-dom: 0.0.0-experimental-06e89951-20250620
-    "@hiogawa/vite-rsc": https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@f58b9a6
+    "@hiogawa/vite-rsc": https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@54b3dd1
 
 onlyBuiltDependencies:
   - esbuild

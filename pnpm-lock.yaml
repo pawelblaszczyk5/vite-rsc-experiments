@@ -7,7 +7,7 @@ settings:
 catalogs:
   canary:
     '@hiogawa/vite-rsc':
-      specifier: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@f58b9a6
+      specifier: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@54b3dd1
       version: 0.4.5
     react:
       specifier: 19.2.0-canary-06e89951-20250620
@@ -45,7 +45,7 @@ catalogs:
       version: 11.2.0
   experimental:
     '@hiogawa/vite-rsc':
-      specifier: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@f58b9a6
+      specifier: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@54b3dd1
       version: 0.4.5
     react:
       specifier: 0.0.0-experimental-06e89951-20250620
@@ -55,7 +55,7 @@ catalogs:
       version: 0.0.0-experimental-06e89951-20250620
   stable:
     '@hiogawa/vite-rsc':
-      specifier: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@f58b9a6
+      specifier: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@54b3dd1
       version: 0.4.5
     react:
       specifier: ^19.1.0
@@ -113,7 +113,7 @@ importers:
     dependencies:
       '@hiogawa/vite-rsc':
         specifier: catalog:canary
-        version: '@hiogawa/vite-rsc-canary@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@f58b9a6(react-dom@19.2.0-canary-06e89951-20250620(react@19.2.0-canary-06e89951-20250620))(react@19.2.0-canary-06e89951-20250620)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))'
+        version: '@hiogawa/vite-rsc-canary@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@54b3dd1(react-dom@19.2.0-canary-06e89951-20250620(react@19.2.0-canary-06e89951-20250620))(react@19.2.0-canary-06e89951-20250620)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))'
       react:
         specifier: catalog:canary
         version: 19.2.0-canary-06e89951-20250620
@@ -150,7 +150,7 @@ importers:
     dependencies:
       '@hiogawa/vite-rsc':
         specifier: catalog:experimental
-        version: '@hiogawa/vite-rsc-experimental@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@f58b9a6(react-dom@0.0.0-experimental-06e89951-20250620(react@0.0.0-experimental-06e89951-20250620))(react@0.0.0-experimental-06e89951-20250620)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))'
+        version: '@hiogawa/vite-rsc-experimental@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@54b3dd1(react-dom@0.0.0-experimental-06e89951-20250620(react@0.0.0-experimental-06e89951-20250620))(react@0.0.0-experimental-06e89951-20250620)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))'
       react:
         specifier: catalog:experimental
         version: 0.0.0-experimental-06e89951-20250620
@@ -187,7 +187,7 @@ importers:
     dependencies:
       '@hiogawa/vite-rsc':
         specifier: catalog:stable
-        version: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@f58b9a6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))
+        version: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@54b3dd1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))
       react:
         specifier: catalog:stable
         version: 19.1.0
@@ -918,28 +918,28 @@ packages:
   '@hapi/topo@5.1.0':
     resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
 
-  '@hiogawa/transforms@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@f58b9a6d47333b3507953e655acef9641d21668c':
-    resolution: {tarball: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@f58b9a6d47333b3507953e655acef9641d21668c}
+  '@hiogawa/transforms@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@54b3dd1c0240fbf062da020c1ecabcc15a79805a':
+    resolution: {tarball: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@54b3dd1c0240fbf062da020c1ecabcc15a79805a}
     version: 0.1.4
 
-  '@hiogawa/vite-rsc-canary@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@f58b9a6':
-    resolution: {tarball: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@f58b9a6}
+  '@hiogawa/vite-rsc-canary@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@54b3dd1':
+    resolution: {tarball: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@54b3dd1}
     version: 0.4.5
     peerDependencies:
       react: '*'
       react-dom: '*'
       vite: '*'
 
-  '@hiogawa/vite-rsc-experimental@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@f58b9a6':
-    resolution: {tarball: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@f58b9a6}
+  '@hiogawa/vite-rsc-experimental@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@54b3dd1':
+    resolution: {tarball: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@54b3dd1}
     version: 0.4.5
     peerDependencies:
       react: '*'
       react-dom: '*'
       vite: '*'
 
-  '@hiogawa/vite-rsc@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@f58b9a6':
-    resolution: {tarball: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@f58b9a6}
+  '@hiogawa/vite-rsc@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@54b3dd1':
+    resolution: {tarball: https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@54b3dd1}
     version: 0.4.5
     peerDependencies:
       react: '*'
@@ -4838,15 +4838,15 @@ snapshots:
     dependencies:
       '@hapi/hoek': 9.3.0
 
-  '@hiogawa/transforms@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@f58b9a6d47333b3507953e655acef9641d21668c':
+  '@hiogawa/transforms@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@54b3dd1c0240fbf062da020c1ecabcc15a79805a':
     dependencies:
       estree-walker: 3.0.3
       magic-string: 0.30.17
       periscopic: 4.0.2
 
-  '@hiogawa/vite-rsc-canary@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@f58b9a6(react-dom@19.2.0-canary-06e89951-20250620(react@19.2.0-canary-06e89951-20250620))(react@19.2.0-canary-06e89951-20250620)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))':
+  '@hiogawa/vite-rsc-canary@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@54b3dd1(react-dom@19.2.0-canary-06e89951-20250620(react@19.2.0-canary-06e89951-20250620))(react@19.2.0-canary-06e89951-20250620)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))':
     dependencies:
-      '@hiogawa/transforms': https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@f58b9a6d47333b3507953e655acef9641d21668c
+      '@hiogawa/transforms': https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@54b3dd1c0240fbf062da020c1ecabcc15a79805a
       '@mjackson/node-fetch-server': 0.6.1
       es-module-lexer: 1.7.0
       magic-string: 0.30.17
@@ -4856,9 +4856,9 @@ snapshots:
       vite: 6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0)
       vitefu: 1.0.7(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))
 
-  '@hiogawa/vite-rsc-experimental@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@f58b9a6(react-dom@0.0.0-experimental-06e89951-20250620(react@0.0.0-experimental-06e89951-20250620))(react@0.0.0-experimental-06e89951-20250620)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))':
+  '@hiogawa/vite-rsc-experimental@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@54b3dd1(react-dom@0.0.0-experimental-06e89951-20250620(react@0.0.0-experimental-06e89951-20250620))(react@0.0.0-experimental-06e89951-20250620)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))':
     dependencies:
-      '@hiogawa/transforms': https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@f58b9a6d47333b3507953e655acef9641d21668c
+      '@hiogawa/transforms': https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@54b3dd1c0240fbf062da020c1ecabcc15a79805a
       '@mjackson/node-fetch-server': 0.6.1
       es-module-lexer: 1.7.0
       magic-string: 0.30.17
@@ -4868,9 +4868,9 @@ snapshots:
       vite: 6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0)
       vitefu: 1.0.7(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))
 
-  '@hiogawa/vite-rsc@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@f58b9a6(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))':
+  '@hiogawa/vite-rsc@https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@54b3dd1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(vite@6.3.5(@types/node@24.0.3)(jiti@2.4.2)(yaml@2.8.0))':
     dependencies:
-      '@hiogawa/transforms': https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@f58b9a6d47333b3507953e655acef9641d21668c
+      '@hiogawa/transforms': https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/transforms@54b3dd1c0240fbf062da020c1ecabcc15a79805a
       '@mjackson/node-fetch-server': 0.6.1
       es-module-lexer: 1.7.0
       magic-string: 0.30.17

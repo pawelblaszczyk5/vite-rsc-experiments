@@ -3,7 +3,7 @@ import type { ReactFormState } from "react-dom/client";
 import { injectRscStreamToHtml } from "@hiogawa/vite-rsc/rsc-html-stream/ssr";
 import { createFromReadableStream } from "@hiogawa/vite-rsc/ssr";
 import { use } from "react";
-import * as ReactDOMServer from "react-dom/server.edge";
+import { renderToReadableStream } from "react-dom/server.edge";
 
 import type { RscPayload } from "#src/framework/entry.rsc.js";
 
@@ -24,7 +24,7 @@ export const renderHTML = async (
 	};
 
 	const bootstrapScriptContent = await import.meta.viteRsc.loadBootstrapScriptContent("index");
-	const htmlStream = await ReactDOMServer.renderToReadableStream(<SsrRoot />, {
+	const htmlStream = await renderToReadableStream(<SsrRoot />, {
 		bootstrapScriptContent: options.debugNojs ? undefined : bootstrapScriptContent,
 		// @ts-expect-error -- untyped field
 		formState: options.formState,

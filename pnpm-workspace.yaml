@@ -1,0 +1,43 @@
+# cspell:ignore esbuild, unrs, jotai
+packages:
+  - apps/*
+  - packages/*
+  - tooling/*
+
+allowUnusedPatches: false
+
+catalog:
+  "@types/node": ^24.0.3
+  babel-plugin-react-compiler: 19.1.0-rc.2
+  commonality: ^0.2.63
+  commonality-checks-recommended: ^0.0.40
+  typescript: ^5.8.3
+  vite: ^6.3.5
+  vite-plugin-inspect: ^11.2.0
+  "@vitejs/plugin-react": ^4.5.2
+  "@types/react": ^19.1.8
+  "@types/react-dom": ^19.1.6
+
+catalogs:
+  stable:
+    react: ^19.1.0
+    react-dom: ^19.1.0
+    "@hiogawa/vite-rsc": ^0.4.5
+  experimental:
+    react: 0.0.0-experimental-12bc60f5-20250613
+    react-dom: 0.0.0-experimental-12bc60f5-20250613
+    "@hiogawa/vite-rsc": https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@3e45a7a
+
+onlyBuiltDependencies:
+  - esbuild
+  - unrs-resolver
+
+overrides:
+  "@commonalityco/studio>@xyflow/react": "-"
+  "@commonalityco/studio>@xyflow/system": "-"
+  "@commonalityco/studio>framer-motion": "-"
+  "@commonalityco/studio>jotai": "-"
+  "@commonalityco/studio>lz-string": "-"
+  "@commonalityco/studio>nuqs": "-"
+  "@commonalityco/studio>socket.io-client": "-"
+  eslint-import-resolver-typescript>eslint-plugin-import: "-"

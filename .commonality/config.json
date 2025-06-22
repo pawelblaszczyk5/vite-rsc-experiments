@@ -1,0 +1,22 @@
+{
+	"$schema": "https://commonality.co/config.json",
+	"checks": {
+		"*": [
+			"recommended/has-readme",
+			"recommended/has-codeowner",
+			"recommended/valid-package-name",
+			"recommended/unique-dependency-types",
+			"recommended/matching-dev-peer-versions",
+			"recommended/extends-repository-field",
+			"@vite-rsc-experiments/commonality/has-description-field",
+			"@vite-rsc-experiments/commonality/has-proper-readme-heading",
+			"@vite-rsc-experiments/commonality/use-catalog-protocol",
+			"@vite-rsc-experiments/commonality/use-exact-workspace-version"
+		],
+		"library": [
+			"@vite-rsc-experiments/commonality/is-marked-as-side-effects-free",
+			"@vite-rsc-experiments/commonality/is-private-package"
+		]
+	},
+	"constraints": { "*": { "disallow": ["application"] } }
+}

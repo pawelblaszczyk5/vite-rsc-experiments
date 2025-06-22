@@ -1,0 +1,22 @@
+{
+	"$schema": "https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json",
+	"version": "0.2",
+	"import": ["@cspell/dict-pl_pl/cspell-ext.json"],
+	"ignorePaths": ["pnpm-lock.yaml", "cspell.json", "**.svg", ".git/", ".gitignore", ".vscode/"],
+	"dictionaries": ["lorem-ipsum"],
+	"useGitignore": true,
+	"words": ["codeowner", "nojs", "typecheck", "vite", "vitejs"],
+	"enableGlobDot": true,
+	"ignoreWords": [
+		"commonality",
+		"commonalityco",
+		"hiogawa",
+		"lingui",
+		"nuqs",
+		"pawelblaszczyk",
+		"predev",
+		"taze",
+		"tseslint",
+		"xyflow"
+	]
+}

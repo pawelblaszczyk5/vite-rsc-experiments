@@ -1,0 +1,17 @@
+{
+	"name": "@vite-rsc-experiments/typescript-config",
+	"version": "0.0.1",
+	"private": true,
+	"description": "Shared TypeScript config",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/pawelblaszczyk5/vite-rsc-experiments",
+		"directory": "tooling/typescript-config"
+	},
+	"files": [
+		"node-build.json",
+		"dom-build.json",
+		"node-no-build.json",
+		"dom-no-build.json"
+	]
+}

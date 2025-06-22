@@ -1,0 +1,116 @@
+name: 🧑‍🔬 CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: 🛠️ Build
+    timeout-minutes: 3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup
+        uses: ./.github/composite-actions/setup
+
+      - name: Run
+        run: pnpm run build
+
+  lint:
+    name: 🔬 Lint
+    timeout-minutes: 3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup
+        uses: ./.github/composite-actions/setup
+
+      - name: Run
+        run: pnpm run lint
+
+  typecheck:
+    name: 🌀 Typecheck
+    timeout-minutes: 3
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup
+        uses: ./.github/composite-actions/setup
+
+      - name: Run
+        run: pnpm run typecheck
+
+  format:
+    name: 🔍 Format
+    timeout-minutes: 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup
+        uses: ./.github/composite-actions/setup
+
+      - name: Run
+        run: pnpm turbo run format
+
+  spellcheck:
+    name: ❌ Spellcheck
+    timeout-minutes: 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup
+        uses: ./.github/composite-actions/setup
+
+      - name: Run
+        run: pnpm turbo run spellcheck
+
+  sort-package-json:
+    name: 📑 package.json sorter
+    timeout-minutes: 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup
+        uses: ./.github/composite-actions/setup
+
+      - name: Run
+        run: pnpm turbo run sort-package-json
+
+  commonality:
+    name: 💹 Commonality
+    timeout-minutes: 1
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+
+      - name: Setup
+        uses: ./.github/composite-actions/setup
+
+      - name: Run constraints
+        run: pnpm turbo run commonality:constrain
+
+      - name: Run checks
+        run: pnpm turbo run commonality:check

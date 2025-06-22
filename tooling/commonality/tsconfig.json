@@ -1,0 +1,1 @@
+{ "extends": "@vite-rsc-experiments/typescript-config/node-build", "include": ["src"] }

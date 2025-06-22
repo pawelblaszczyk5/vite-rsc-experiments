@@ -1,0 +1,37 @@
+{
+	"name": "@vite-rsc-experiments/commonality",
+	"version": "0.0.1",
+	"private": true,
+	"description": "Commonality checks package",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/pawelblaszczyk5/vite-rsc-experiments",
+		"directory": "tooling/commonality"
+	},
+	"type": "module",
+	"imports": {
+		"#src/*": "./dist/src/*"
+	},
+	"exports": {
+		"./has-description-field": "./dist/src/has-description-field.js",
+		"./has-proper-readme-heading": "./dist/src/has-proper-readme-heading.js",
+		"./is-marked-as-side-effects-free": "./dist/src/is-marked-as-side-effects-free.js",
+		"./is-private-package": "./dist/src/is-private-package.js",
+		"./use-catalog-protocol": "./dist/src/use-catalog-protocol.js",
+		"./use-exact-workspace-version": "./dist/src/use-exact-workspace-version.js"
+	},
+	"scripts": {
+		"build": "tsc --noCheck",
+		"lint": "eslint",
+		"lint:fix": "eslint --fix",
+		"typecheck": "tsc --build --noEmit"
+	},
+	"dependencies": {
+		"commonality": "catalog:"
+	},
+	"devDependencies": {
+		"@vite-rsc-experiments/eslint-config": "workspace:0.0.1",
+		"@vite-rsc-experiments/typescript-config": "workspace:0.0.1",
+		"typescript": "catalog:"
+	}
+}

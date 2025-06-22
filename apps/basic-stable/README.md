@@ -1,1 +1,1 @@
-# Basic
+# @vite-rsc-experiments/basic-stable

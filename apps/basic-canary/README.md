@@ -1,1 +1,1 @@
-# @vite-rsc-experiments/basic-experimental
+# @vite-rsc-experiments/basic-canary

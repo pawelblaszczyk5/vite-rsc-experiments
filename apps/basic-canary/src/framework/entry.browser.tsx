@@ -69,7 +69,7 @@ function listenNavigation(onNavigation: () => void) {
 }
 
 const main = async () => {
-	let setPayload: (v: RscPayload) => void;
+	let setPayload: (value: RscPayload) => void;
 
 	const initialPayload = await createFromReadableStream<RscPayload>(getRscStreamFromHtml());
 

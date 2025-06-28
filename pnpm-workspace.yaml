@@ -11,6 +11,7 @@ catalog:
   babel-plugin-react-compiler: 19.1.0-rc.2
   commonality: ^0.2.63
   commonality-checks-recommended: ^0.0.40
+  "@hiogawa/transforms": ^0.1.6
   typescript: ^5.8.3
   vite: ^7.0.0
   vite-plugin-inspect: ^11.2.0

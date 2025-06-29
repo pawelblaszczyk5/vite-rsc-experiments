@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import reactLogo from "#src/assets/react.svg";
 import { revalidateCache } from "#src/use-cache-runtime.js";
 
@@ -11,7 +13,18 @@ const getRandomNumber = async (min: number, max: number) => {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
-const App = () => (
+const CachedTime = async ({ children }: Readonly<{ children: ReactNode }>) => {
+	"use cache";
+
+	return (
+		<div>
+			<p>Cached time: {new Date().toISOString()}</p>
+			<p>Current time: {children}</p>
+		</div>
+	);
+};
+
+const App = async () => (
 	<div id="root">
 		<div>
 			<a href="https://vite.dev" target="_blank">
@@ -42,6 +55,20 @@ const App = () => (
 				}}
 			>
 				<button type="submit">Cached random number between 6 and 10: {getRandomNumber(6, 10)}</button>
+			</form>
+		</div>
+		<div className="card">
+			<form
+				action={async () => {
+					"use server";
+
+					revalidateCache(CachedTime);
+				}}
+			>
+				<CachedTime>
+					<span>{new Date().toISOString()}</span>
+				</CachedTime>
+				<button type="submit">Refresh cached time</button>
 			</form>
 		</div>
 		<ul className="read-the-docs">

@@ -7,7 +7,7 @@ import {
 	renderToReadableStream,
 } from "@hiogawa/vite-rsc/rsc";
 
-type CacheableFunction = (...parameters: Array<any>) => unknown;
+type CacheableFunction = (...parameters: Array<any>) => Promise<unknown>;
 
 class StreamCacher {
 	#stream: ReadableStream<Uint8Array>;
@@ -34,38 +34,39 @@ const replyToCacheKey = async (reply: FormData | string) => {
 	return btoa(String.fromCodePoint(...new Uint8Array(buffer)));
 };
 
-const cachedFunctionMap = new WeakMap<CacheableFunction, unknown>();
-const cachedFunctionCacheEntries = new WeakMap<CacheableFunction, Record<string, Promise<StreamCacher>>>();
-
-export default function cacheWrapper(function_: (...arguments_: Array<any>) => Promise<unknown>) {
-	const instrumentedFunction = cachedFunctionMap.has(function_);
-
-	if (instrumentedFunction) {
-		return instrumentedFunction;
+const getOrInsertComputed = <K, V>(map: Map<K, V>, key: K, getComputed: (key: K) => V) => {
+	if (!map.has(key)) {
+		map.set(key, getComputed(key));
 	}
 
-	const cachedFunction = async (...arguments_: Array<any>): Promise<unknown> => {
-		let cacheEntries = cachedFunctionCacheEntries.get(cachedFunction);
+	return map.get(key) as V;
+};
 
-		if (!cacheEntries) {
-			cacheEntries = {};
-			cachedFunctionCacheEntries.set(cachedFunction, cacheEntries);
-		}
+// NOTE: this is temporal solution - I don't want this revalidate by function anyway
+const instrumentedFunctionIdMap = new WeakMap<CacheableFunction, string>();
+const cachedStreams = new Map<string, Promise<StreamCacher>>();
 
+export default function cacheWrapper(functionToInstrument: CacheableFunction) {
+	const instrumentedFunctionId = crypto.randomUUID();
+
+	const instrumentedFunction = async (...arguments_: Array<any>): Promise<unknown> => {
 		const clientTemporaryReferences = createClientTemporaryReferenceSet();
 		const encodedArguments = await encodeReply(arguments_, { temporaryReferences: clientTemporaryReferences });
 		const serializedCacheKey = await replyToCacheKey(encodedArguments);
 
-		const entryPromise = (cacheEntries[serializedCacheKey] ??= (async () => {
+		const scopedSerializedCacheKey = `${instrumentedFunctionId}:${serializedCacheKey}`;
+
+		const entryPromise = getOrInsertComputed(cachedStreams, scopedSerializedCacheKey, async () => {
 			const temporaryReferences = createTemporaryReferenceSet();
 			const decodedArguments = await decodeReply(encodedArguments, { temporaryReferences });
 
-			const result = await function_(...decodedArguments);
+			const result = await functionToInstrument(...decodedArguments);
 
 			const stream = renderToReadableStream(result, { environmentName: "Cache", temporaryReferences });
+			const streamCacher = new StreamCacher(stream);
 
-			return new StreamCacher(stream);
-		})());
+			return streamCacher;
+		});
 
 		const entry = await entryPromise;
 
@@ -78,11 +79,20 @@ export default function cacheWrapper(function_: (...arguments_: Array<any>) => P
 		return result;
 	};
 
-	cachedFunctionMap.set(function_, cachedFunction);
+	instrumentedFunctionIdMap.set(instrumentedFunction, instrumentedFunctionId);
 
-	return cachedFunction;
+	return instrumentedFunction;
 }
 
 export const revalidateCache = (cachedFunction: CacheableFunction) => {
-	cachedFunctionCacheEntries.delete(cachedFunction);
+	const instrumentedFunctionId = instrumentedFunctionIdMap.get(cachedFunction);
+
+	if (!instrumentedFunctionId) {
+		throw new Error("Trying to revalidate function that's not instrumented properly");
+	}
+
+	cachedStreams
+		.keys()
+		.filter((key) => key.startsWith(instrumentedFunctionId))
+		.forEach((key) => cachedStreams.delete(key));
 };

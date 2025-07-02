@@ -57,8 +57,8 @@ type Tag = string;
 type CacheKey = string;
 
 const cachedStreams = new Map<CacheKey, Promise<CacheEntry>>();
-const cachedKeysForTag = new Map<Tag, Array<CacheKey>>();
-const relatedTagsForKey = new Map<CacheKey, Array<Tag>>();
+const cachedKeysForTag = new Map<Tag, Set<CacheKey>>();
+const relatedTagsForKey = new Map<CacheKey, Set<Tag>>();
 
 const deleteExistingTags = (key: CacheKey) => {
 	const tags = relatedTagsForKey.get(key);
@@ -68,22 +68,19 @@ const deleteExistingTags = (key: CacheKey) => {
 	}
 
 	tags.forEach((tag) => {
-		const previousKeysForTag = cachedKeysForTag.get(tag);
+		const keysForTag = cachedKeysForTag.get(tag);
 
-		if (!previousKeysForTag) {
+		if (!keysForTag) {
 			throw new Error("Keys association must always exist for a tag");
 		}
 
-		cachedKeysForTag.set(
-			tag,
-			previousKeysForTag.filter((previousKey) => previousKey !== key),
-		);
+		keysForTag.delete(key);
 	});
 };
 
 interface CacheStorage {
 	life?: CacheLife;
-	tags: Array<Tag>;
+	tags: Set<Tag>;
 }
 
 const cacheStorage = new AsyncLocalStorage<CacheStorage>();
@@ -107,7 +104,7 @@ export const cacheTag = (...tags: Array<Tag>) => {
 		throw new Error("cacheTag must be called within a cache context");
 	}
 
-	store.tags = [...new Set([...store.tags, ...tags])];
+	tags.forEach((tag) => store.tags.add(tag));
 };
 
 export const expireTag = (tag: Tag) => {
@@ -137,7 +134,7 @@ export default function cacheWrapper(functionToInstrument: CacheableFunction) {
 			const temporaryReferences = createTemporaryReferenceSet();
 			const decodedArguments = await decodeReply(encodedArguments, { temporaryReferences });
 
-			const cacheContext: CacheStorage = { tags: [] };
+			const cacheContext: CacheStorage = { tags: new Set() };
 			const result = await cacheStorage.run(cacheContext, async () => functionToInstrument(...decodedArguments));
 
 			const cacheLife: CacheLife = cacheContext.life ?? "default";
@@ -146,9 +143,9 @@ export default function cacheWrapper(functionToInstrument: CacheableFunction) {
 			relatedTagsForKey.set(scopedSerializedCacheKey, tags);
 
 			tags.forEach((tag) => {
-				const keys = cachedKeysForTag.get(tag) ?? [];
+				const newKeys = cachedKeysForTag.get(tag) ?? new Set();
 
-				const newKeys = [...new Set([scopedSerializedCacheKey, ...keys])];
+				newKeys.add(scopedSerializedCacheKey);
 
 				cachedKeysForTag.set(tag, newKeys);
 			});

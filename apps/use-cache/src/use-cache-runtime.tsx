@@ -185,5 +185,7 @@ export default function cacheWrapper(functionToInstrument: CacheableFunction) {
 		return result;
 	};
 
+	Object.defineProperty(instrumentedFunction, "name", { configurable: true, value: functionToInstrument.name });
+
 	return instrumentedFunction;
 }

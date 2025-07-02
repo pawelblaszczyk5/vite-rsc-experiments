@@ -25,9 +25,9 @@
 	},
 	"dependencies": {
 		"@eslint/eslintrc": "^3.3.1",
-		"@eslint/js": "^9.30.0",
+		"@eslint/js": "^9.30.1",
 		"@stylistic/eslint-plugin": "^5.1.0",
-		"eslint": "^9.30.0",
+		"eslint": "^9.30.1",
 		"eslint-config-flat-gitignore": "^2.1.0",
 		"eslint-import-resolver-typescript": "^4.4.4",
 		"eslint-plugin-canonical": "^5.1.3",
@@ -50,6 +50,6 @@
 		"eslint-plugin-react-x": "^1.52.2",
 		"eslint-plugin-regexp": "^2.9.0",
 		"eslint-plugin-unicorn": "^59.0.1",
-		"typescript-eslint": "8.35.0"
+		"typescript-eslint": "8.35.1"
 	}
 }

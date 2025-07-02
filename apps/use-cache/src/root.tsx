@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import reactLogo from "#src/assets/react.svg";
-import { revalidateCache } from "#src/use-cache-runtime.js";
+import { cacheLife, cacheTag, expireTag } from "#src/use-cache-runtime.js";
 
 import "#src/index.css";
 
@@ -10,15 +10,30 @@ import viteLogo from "/vite.svg";
 const getRandomNumber = async (min: number, max: number) => {
 	"use cache";
 
+	cacheTag("random-number");
+	cacheTag(`random-number-${min.toString()}-${max.toString()}`);
+
+	cacheLife("minutes");
+
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 const CachedTime = async ({ children }: Readonly<{ children: ReactNode }>) => {
 	"use cache";
 
+	const isCachedByTag = Math.random() > 0.15;
+
+	if (isCachedByTag) {
+		cacheTag("time");
+	} else {
+		cacheLife("minutes");
+	}
+
 	return (
 		<div>
-			<p>Cached time: {new Date().toISOString()}</p>
+			<p>
+				Cached time: {new Date().toISOString()} <i>({isCachedByTag ? "by tag" : "by ttl"})</i>
+			</p>
 			<p>Current time: {children}</p>
 		</div>
 	);
@@ -40,7 +55,7 @@ const App = async () => (
 				action={async () => {
 					"use server";
 
-					revalidateCache(getRandomNumber);
+					expireTag("random-number-1-5");
 				}}
 			>
 				<button type="submit">Cached random number between 1 and 5: {getRandomNumber(1, 5)}</button>
@@ -51,7 +66,7 @@ const App = async () => (
 				action={async () => {
 					"use server";
 
-					revalidateCache(getRandomNumber);
+					expireTag("random-number-6-10");
 				}}
 			>
 				<button type="submit">Cached random number between 6 and 10: {getRandomNumber(6, 10)}</button>
@@ -62,13 +77,24 @@ const App = async () => (
 				action={async () => {
 					"use server";
 
-					revalidateCache(CachedTime);
+					expireTag("random-number");
+				}}
+			>
+				<button type="submit">Expire both random numbers</button>
+			</form>{" "}
+		</div>
+		<div className="card">
+			<form
+				action={async () => {
+					"use server";
+
+					expireTag("time");
 				}}
 			>
 				<CachedTime>
 					<span>{new Date().toISOString()}</span>
 				</CachedTime>
-				<button type="submit">Refresh cached time</button>
+				<button type="submit">Refresh cached time by key</button>
 			</form>
 		</div>
 		<ul className="read-the-docs">

@@ -6,6 +6,7 @@ import {
 	encodeReply,
 	renderToReadableStream,
 } from "@hiogawa/vite-rsc/rsc";
+import { AsyncLocalStorage } from "node:async_hooks";
 
 type CacheableFunction = (...parameters: Array<any>) => Promise<unknown>;
 
@@ -34,17 +35,93 @@ const replyToCacheKey = async (reply: FormData | string) => {
 	return btoa(String.fromCodePoint(...new Uint8Array(buffer)));
 };
 
-const getOrInsertComputed = <K, V>(map: Map<K, V>, key: K, getComputed: (key: K) => V) => {
-	if (!map.has(key)) {
-		map.set(key, getComputed(key));
+interface CacheEntry {
+	expiresAt: number;
+	value: StreamCacher;
+}
+
+/* eslint-disable perfectionist/sort-objects -- I want this to be sorted semantically */
+const CACHE_LIFE_DURATION = {
+	seconds: 1_000,
+	minutes: 1_000 * 60,
+	default: 1_000 * 60 * 5,
+	hours: 1_000 * 60 * 60,
+	days: 1_000 * 60 * 60 * 24,
+	weeks: 1_000 * 60 * 60 * 24 * 7,
+	max: 1_000 * 60 * 60 * 24 * 30,
+};
+/* eslint-enable perfectionist/sort-objects -- I want this to be sorted semantically */
+
+type CacheLife = keyof typeof CACHE_LIFE_DURATION;
+type Tag = string;
+type CacheKey = string;
+
+const cachedStreams = new Map<CacheKey, Promise<CacheEntry>>();
+const cachedKeysForTag = new Map<Tag, Array<CacheKey>>();
+const relatedTagsForKey = new Map<CacheKey, Array<Tag>>();
+
+const deleteExistingTags = (key: CacheKey) => {
+	const tags = relatedTagsForKey.get(key);
+
+	if (!tags) {
+		throw new Error("Tags association must always exist for a cache key");
 	}
 
-	return map.get(key) as V;
+	tags.forEach((tag) => {
+		const previousKeysForTag = cachedKeysForTag.get(tag);
+
+		if (!previousKeysForTag) {
+			throw new Error("Keys association must always exist for a tag");
+		}
+
+		cachedKeysForTag.set(
+			tag,
+			previousKeysForTag.filter((previousKey) => previousKey !== key),
+		);
+	});
 };
 
-// NOTE: this is temporal solution - I don't want this revalidate by function anyway
-const instrumentedFunctionIdMap = new WeakMap<CacheableFunction, string>();
-const cachedStreams = new Map<string, Promise<StreamCacher>>();
+interface CacheStorage {
+	life?: CacheLife;
+	tags: Array<Tag>;
+}
+
+const cacheStorage = new AsyncLocalStorage<CacheStorage>();
+
+export const cacheLife = (life: CacheLife) => {
+	const store = cacheStorage.getStore();
+
+	if (!store) {
+		throw new Error("cacheLife must be called within a cache context");
+	}
+
+	if (!store.life || CACHE_LIFE_DURATION[life] < CACHE_LIFE_DURATION[store.life]) {
+		store.life = life;
+	}
+};
+
+export const cacheTag = (...tags: Array<Tag>) => {
+	const store = cacheStorage.getStore();
+
+	if (!store) {
+		throw new Error("cacheTag must be called within a cache context");
+	}
+
+	store.tags = [...new Set([...store.tags, ...tags])];
+};
+
+export const expireTag = (tag: Tag) => {
+	const keysToExpire = cachedKeysForTag.get(tag);
+
+	if (!keysToExpire) {
+		return;
+	}
+
+	keysToExpire.forEach((key) => {
+		cachedStreams.delete(key);
+		deleteExistingTags(key);
+	});
+};
 
 export default function cacheWrapper(functionToInstrument: CacheableFunction) {
 	const instrumentedFunctionId = crypto.randomUUID();
@@ -56,21 +133,50 @@ export default function cacheWrapper(functionToInstrument: CacheableFunction) {
 
 		const scopedSerializedCacheKey = `${instrumentedFunctionId}:${serializedCacheKey}`;
 
-		const entryPromise = getOrInsertComputed(cachedStreams, scopedSerializedCacheKey, async () => {
+		const getFreshValue = async () => {
 			const temporaryReferences = createTemporaryReferenceSet();
 			const decodedArguments = await decodeReply(encodedArguments, { temporaryReferences });
 
-			const result = await functionToInstrument(...decodedArguments);
+			const cacheContext: CacheStorage = { tags: [] };
+			const result = await cacheStorage.run(cacheContext, async () => functionToInstrument(...decodedArguments));
+
+			const cacheLife: CacheLife = cacheContext.life ?? "default";
+			const tags = cacheContext.tags;
+
+			relatedTagsForKey.set(scopedSerializedCacheKey, tags);
+
+			tags.forEach((tag) => {
+				const keys = cachedKeysForTag.get(tag) ?? [];
+
+				const newKeys = [...new Set([scopedSerializedCacheKey, ...keys])];
+
+				cachedKeysForTag.set(tag, newKeys);
+			});
 
 			const stream = renderToReadableStream(result, { environmentName: "Cache", temporaryReferences });
 			const streamCacher = new StreamCacher(stream);
 
-			return streamCacher;
-		});
+			return { expiresAt: Date.now() + CACHE_LIFE_DURATION[cacheLife], value: streamCacher };
+		};
 
-		const entry = await entryPromise;
+		let cacheEntryPromise = cachedStreams.get(scopedSerializedCacheKey);
 
-		const result = createFromReadableStream(entry.get(), {
+		if (cacheEntryPromise) {
+			const cacheEntry = await cacheEntryPromise;
+
+			if (cacheEntry.expiresAt <= Date.now()) {
+				deleteExistingTags(scopedSerializedCacheKey);
+				cacheEntryPromise = getFreshValue();
+			}
+		} else {
+			cacheEntryPromise = getFreshValue();
+		}
+
+		cachedStreams.set(scopedSerializedCacheKey, cacheEntryPromise);
+
+		const entry = await cacheEntryPromise;
+
+		const result = createFromReadableStream(entry.value.get(), {
 			environmentName: "Cache",
 			replayConsoleLogs: true,
 			temporaryReferences: clientTemporaryReferences,
@@ -79,20 +185,5 @@ export default function cacheWrapper(functionToInstrument: CacheableFunction) {
 		return result;
 	};
 
-	instrumentedFunctionIdMap.set(instrumentedFunction, instrumentedFunctionId);
-
 	return instrumentedFunction;
 }
-
-export const revalidateCache = (cachedFunction: CacheableFunction) => {
-	const instrumentedFunctionId = instrumentedFunctionIdMap.get(cachedFunction);
-
-	if (!instrumentedFunctionId) {
-		throw new Error("Trying to revalidate function that's not instrumented properly");
-	}
-
-	cachedStreams
-		.keys()
-		.filter((key) => key.startsWith(instrumentedFunctionId))
-		.forEach((key) => cachedStreams.delete(key));
-};

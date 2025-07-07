@@ -22,7 +22,7 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
-		"@hiogawa/vite-rsc": "catalog:experimental",
+		"@vitejs/plugin-rsc": "catalog:experimental",
 		"react": "catalog:experimental",
 		"react-dom": "catalog:experimental"
 	},

@@ -11,7 +11,6 @@ catalog:
   babel-plugin-react-compiler: 19.1.0-rc.2
   commonality: ^0.2.63
   commonality-checks-recommended: ^0.0.40
-  "@hiogawa/transforms": ^0.1.6
   typescript: ^5.8.3
   vite: ^7.0.2
   vite-plugin-inspect: ^11.3.0
@@ -23,15 +22,15 @@ catalogs:
   stable:
     react: ^19.1.0
     react-dom: ^19.1.0
-    "@hiogawa/vite-rsc": https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc@254239e
+    "@vitejs/plugin-rsc": ^0.4.11
   canary:
-    react: 19.2.0-canary-7216c0f0-20250630
-    react-dom: 19.2.0-canary-7216c0f0-20250630
-    "@hiogawa/vite-rsc": https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-canary@254239e
+    react: 19.2.0-canary-5d87cd22-20250704
+    react-dom: 19.2.0-canary-5d87cd22-20250704
+    "@vitejs/plugin-rsc": https://pkg.pr.new/vitejs/vite-plugin-react/@vitejs/plugin-rsc-canary@ac6028d
   experimental:
-    react: 0.0.0-experimental-7216c0f0-20250630
-    react-dom: 0.0.0-experimental-7216c0f0-20250630
-    "@hiogawa/vite-rsc": https://pkg.pr.new/hi-ogawa/vite-plugins/@hiogawa/vite-rsc-experimental@254239e
+    react: 0.0.0-experimental-5d87cd22-20250704
+    react-dom: 0.0.0-experimental-5d87cd22-20250704
+    "@vitejs/plugin-rsc": https://pkg.pr.new/vitejs/vite-plugin-react/@vitejs/plugin-rsc-experimental@ac6028d
 
 onlyBuiltDependencies:
   - esbuild

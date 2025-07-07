@@ -5,7 +5,7 @@ import {
 	decodeReply,
 	encodeReply,
 	renderToReadableStream,
-} from "@hiogawa/vite-rsc/rsc";
+} from "@vitejs/plugin-rsc/rsc";
 import { AsyncLocalStorage } from "node:async_hooks";
 
 type CacheableFunction = (...parameters: Array<any>) => Promise<unknown>;

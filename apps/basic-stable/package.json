@@ -22,7 +22,7 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
-		"@hiogawa/vite-rsc": "catalog:stable",
+		"@vitejs/plugin-rsc": "catalog:stable",
 		"react": "catalog:stable",
 		"react-dom": "catalog:stable"
 	},

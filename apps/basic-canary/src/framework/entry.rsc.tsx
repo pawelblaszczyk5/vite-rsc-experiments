@@ -7,7 +7,7 @@ import {
 	decodeReply,
 	loadServerAction,
 	renderToReadableStream,
-} from "@hiogawa/vite-rsc/rsc";
+} from "@vitejs/plugin-rsc/rsc";
 
 import { Root } from "#src/root.js";
 

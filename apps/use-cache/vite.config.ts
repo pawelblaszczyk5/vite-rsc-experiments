@@ -1,8 +1,7 @@
 import type { Plugin } from "vite";
 
-import { transformHoistInlineDirective } from "@hiogawa/transforms";
-import rsc from "@hiogawa/vite-rsc/plugin";
 import react from "@vitejs/plugin-react";
+import rsc, { transformHoistInlineDirective } from "@vitejs/plugin-rsc";
 import { defineConfig, parseAstAsync } from "vite";
 import inspect from "vite-plugin-inspect";
 

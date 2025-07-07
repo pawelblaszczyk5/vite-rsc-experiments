@@ -22,7 +22,7 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
-		"@hiogawa/vite-rsc": "catalog:canary",
+		"@vitejs/plugin-rsc": "catalog:canary",
 		"react": "catalog:canary",
 		"react-dom": "catalog:canary"
 	},

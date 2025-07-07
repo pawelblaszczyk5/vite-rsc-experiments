@@ -1,7 +1,7 @@
 import type { ReactFormState } from "react-dom/client";
 
-import { injectRscStreamToHtml } from "@hiogawa/vite-rsc/rsc-html-stream/ssr";
-import { createFromReadableStream } from "@hiogawa/vite-rsc/ssr";
+import { injectRscStreamToHtml } from "@vitejs/plugin-rsc/rsc-html-stream/ssr";
+import { createFromReadableStream } from "@vitejs/plugin-rsc/ssr";
 import { use } from "react";
 import { renderToReadableStream } from "react-dom/server.edge";
 

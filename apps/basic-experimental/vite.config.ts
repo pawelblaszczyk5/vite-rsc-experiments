@@ -1,5 +1,5 @@
-import rsc from "@hiogawa/vite-rsc/plugin";
 import react from "@vitejs/plugin-react";
+import rsc from "@vitejs/plugin-rsc";
 import { defineConfig } from "vite";
 import inspect from "vite-plugin-inspect";
 

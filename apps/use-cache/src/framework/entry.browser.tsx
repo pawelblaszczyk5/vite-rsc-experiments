@@ -4,8 +4,8 @@ import {
 	createTemporaryReferenceSet,
 	encodeReply,
 	setServerCallback,
-} from "@hiogawa/vite-rsc/browser";
-import { getRscStreamFromHtml } from "@hiogawa/vite-rsc/rsc-html-stream/browser";
+} from "@vitejs/plugin-rsc/browser";
+import { getRscStreamFromHtml } from "@vitejs/plugin-rsc/rsc-html-stream/browser";
 import { startTransition, StrictMode, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 

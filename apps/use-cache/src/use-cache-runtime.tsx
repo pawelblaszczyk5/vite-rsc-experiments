@@ -120,7 +120,7 @@ export const expireTag = (tag: Tag) => {
 	});
 };
 
-export default function cacheWrapper(functionToInstrument: CacheableFunction) {
+const cacheWrapper = (functionToInstrument: CacheableFunction) => {
 	const instrumentedFunctionId = crypto.randomUUID();
 
 	const instrumentedFunction = async (...arguments_: Array<any>): Promise<unknown> => {
@@ -185,4 +185,6 @@ export default function cacheWrapper(functionToInstrument: CacheableFunction) {
 	Object.defineProperty(instrumentedFunction, "name", { configurable: true, value: functionToInstrument.name });
 
 	return instrumentedFunction;
-}
+};
+
+export default cacheWrapper;

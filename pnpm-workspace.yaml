@@ -17,6 +17,9 @@ catalog:
   "@vitejs/plugin-react": ^4.6.0
   "@types/react": ^19.1.8
   "@types/react-dom": ^19.1.6
+  "@stylexjs/babel-plugin": ^0.14.1
+  "@stylexjs/postcss-plugin": ^0.14.1
+  "@stylexjs/stylex": ^0.14.1
 
 catalogs:
   stable:

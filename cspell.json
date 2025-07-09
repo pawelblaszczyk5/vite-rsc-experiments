@@ -5,7 +5,7 @@
 	"ignorePaths": ["pnpm-lock.yaml", "cspell.json", "**.svg", ".git/", ".gitignore", ".vscode/"],
 	"dictionaries": ["lorem-ipsum"],
 	"useGitignore": true,
-	"words": ["codeowner", "nojs", "typecheck", "vite", "vitejs"],
+	"words": ["codeowner", "nojs", "stylex", "stylexjs", "typecheck", "vite", "vitejs"],
 	"enableGlobDot": true,
 	"ignoreWords": [
 		"commonality",

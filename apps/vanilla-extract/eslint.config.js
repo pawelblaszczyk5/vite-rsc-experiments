@@ -9,4 +9,5 @@ export default [
 	...node,
 	{ files: ["vite.config.ts", "src/framework/entry.rsc.tsx"], rules: { "import-x/no-default-export": "off" } },
 	{ files: ["src/**"], rules: { "@typescript-eslint/require-await": "off" } },
+	{ files: ["vite.config.ts"], rules: { "fp/no-loops": "off" } },
 ];

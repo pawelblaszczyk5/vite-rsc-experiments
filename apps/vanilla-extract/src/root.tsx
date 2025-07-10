@@ -1,5 +1,5 @@
+import { ClientCounter } from "#src/client.js";
 import { container } from "#src/styles.css.js";
-import { ClientCounter } from "./client.js";
 
 const App = () => <h1 className={container}>Test-server</h1>;
 

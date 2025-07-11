@@ -11,8 +11,8 @@ const App = () => (
 	</>
 );
 
-export const Root = () => (
-	<html lang="en">
+export const Root = ({ language }: Readonly<{ language: "en-US" | "pl-PL" }>) => (
+	<html lang={language}>
 		<head>
 			<meta charSet="utf8" />
 			<link href="/vite.svg" rel="icon" type="image/svg+xml" />

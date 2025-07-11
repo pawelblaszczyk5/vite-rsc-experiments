@@ -52,7 +52,12 @@ export default async function handler(request: Request): Promise<Response> {
 		}
 	}
 
-	const rscStream = renderToReadableStream<RscPayload>({ formState, language, returnValue, root: <Root /> });
+	const rscStream = renderToReadableStream<RscPayload>({
+		formState,
+		language,
+		returnValue,
+		root: <Root language={language} />,
+	});
 
 	const isRscRequest =
 		(!request.headers.get("accept")?.includes("text/html") && !url.searchParams.has("__html"))

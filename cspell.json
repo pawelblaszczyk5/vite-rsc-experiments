@@ -17,5 +17,6 @@
 		"taze",
 		"tseslint",
 		"xyflow"
-	]
+	],
+	"overrides": [{ "filename": "apps/lingui/src/locales/pl-PL.po", "language": "pl-PL,en-US" }]
 }

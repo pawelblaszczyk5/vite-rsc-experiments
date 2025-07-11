@@ -1,0 +1,1 @@
+# @vite-rsc-experiments/lingui

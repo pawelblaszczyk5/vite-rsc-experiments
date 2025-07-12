@@ -1,5 +1,3 @@
-import { setupI18n } from "@lingui/core";
-import { I18nProvider } from "@lingui/react";
 import {
 	createFromFetch,
 	createFromReadableStream,
@@ -12,8 +10,6 @@ import { startTransition, StrictMode, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 
 import type { RscPayload } from "#src/framework/entry.rsc.js";
-
-import { englishMessages, polishMessages } from "#src/lingui/messages.js";
 
 const handleLinkClick = (event: MouseEvent) => {
 	const link = (event.target as Element).closest("a");
@@ -77,11 +73,6 @@ const main = async () => {
 
 	const initialPayload = await createFromReadableStream<RscPayload>(getRscStreamFromHtml());
 
-	const i18n = setupI18n();
-	const messages = initialPayload.language === "en-US" ? englishMessages : polishMessages;
-
-	i18n.loadAndActivate({ locale: initialPayload.language, messages });
-
 	const fetchRscPayload = async () => {
 		const payload = await createFromFetch<RscPayload>(fetch(globalThis.location.href));
 
@@ -123,9 +114,7 @@ const main = async () => {
 
 	const browserRoot = (
 		<StrictMode>
-			<I18nProvider i18n={i18n}>
-				<BrowserRoot />
-			</I18nProvider>
+			<BrowserRoot />
 		</StrictMode>
 	);
 

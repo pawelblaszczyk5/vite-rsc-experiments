@@ -13,7 +13,6 @@ import { Root } from "#src/root.js";
 
 export interface RscPayload {
 	formState?: ReactFormState | undefined;
-	language: "en-US" | "pl-PL";
 	returnValue?: unknown;
 	root: React.ReactNode;
 }
@@ -27,7 +26,6 @@ export default async function handler(request: Request): Promise<Response> {
 
 	const url = new URL(request.url);
 
-	const language = url.pathname === "/pl" ? "pl-PL" : "en-US";
 
 	if (isAction) {
 		const actionId = request.headers.get("x-rsc-action");
@@ -52,12 +50,7 @@ export default async function handler(request: Request): Promise<Response> {
 		}
 	}
 
-	const rscStream = renderToReadableStream<RscPayload>({
-		formState,
-		language,
-		returnValue,
-		root: <Root language={language} />,
-	});
+	const rscStream = renderToReadableStream<RscPayload>({ formState, returnValue, root: <Root /> });
 
 	const isRscRequest =
 		(!request.headers.get("accept")?.includes("text/html") && !url.searchParams.has("__html"))

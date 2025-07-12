@@ -2,8 +2,6 @@
 
 This setup is in theory a bit different than what Lingui docs show for RSC - https://lingui.dev/tutorials/react-rsc
 
-The issue here is that the setup from the docs are limited by what Next.js allow and catered for it. With e.g. Vite RSC we have full access to our entrypoints so we can easily create i18n instance once. I also omit using i18n in the RSC world intentionally. It's much better imho to send language and let browser load proper locale (which can be cached etc) then pollute RSC payload with it.
+Initially I had a bit different approach - you can see past examples but landed on something much easier. Instead of loading catalogs in React Server I pass them into the client as client references 😄
 
-~~This example is also not perfect, but it's the simplest form which would need to be improved for serious usage - handling language change, loading only one messages bundle etc~~
-
-I fixed it mostly and I think that's the way 😄 I got a cool new idea - messages can be client references! Then we don't need to be worried about loading them on the client at all - it's all handled from RSC side. Also it makes it automatically working with loading only needed messages, handling language change by action etc.
+Since `Trans` component will usually be a leaf one - it doesn't change anything to use it as a client component. This will result in optimal loading/caching etc. We also don't need to be worried about loading them on the client at all - it's all handled from RSC side. Also it makes it automatically working with loading only needed messages, handling language change by action etc.

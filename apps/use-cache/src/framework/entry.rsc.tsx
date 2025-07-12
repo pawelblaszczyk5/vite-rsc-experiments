@@ -67,3 +67,7 @@ export default async function handler(request: Request): Promise<Response> {
 
 	return new Response(htmlStream, { headers: { "Content-type": "text/html", vary: "accept" } });
 }
+
+if (import.meta.hot) {
+	import.meta.hot.accept();
+}

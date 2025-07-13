@@ -12,7 +12,8 @@ export const I18nProvider = ({
 	language,
 	messages,
 }: Readonly<{ children: ReactNode; language: "en-US" | "pl-PL"; messages: Messages }>) => {
-	const [i18n, setI18n] = useState(() => {
+	// eslint-disable-next-line react-naming-convention/use-state -- I don't need to have a setter here
+	const [i18n] = useState(() => {
 		const i18n = setupI18n();
 
 		i18n.loadAndActivate({ locale: language, messages });
@@ -27,11 +28,7 @@ export const I18nProvider = ({
 		setPreviousLanguage(language);
 		setPreviousMessages(messages);
 
-		const i18n = setupI18n();
-
 		i18n.loadAndActivate({ locale: language, messages });
-
-		setI18n(i18n);
 	}
 
 	return <LinguiI18nProvider i18n={i18n}>{children}</LinguiI18nProvider>;

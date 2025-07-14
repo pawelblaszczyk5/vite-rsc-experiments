@@ -48,3 +48,4 @@ overrides:
   "@commonalityco/studio>nuqs": "-"
   "@commonalityco/studio>socket.io-client": "-"
   eslint-import-resolver-typescript>eslint-plugin-import: "-"
+  vite: "npm:rolldown-vite@latest"

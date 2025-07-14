@@ -13,6 +13,7 @@ const vitePluginUseCache = (): Array<Plugin> => [
 				return;
 			}
 			const ast = await parseAstAsync(code);
+			// @ts-expect-error -- that works?
 			const result = transformHoistInlineDirective(code, ast, {
 				directive: "use cache",
 				noExport: true,

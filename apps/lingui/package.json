@@ -23,17 +23,17 @@
 		"typecheck": "tsc --build --noEmit"
 	},
 	"dependencies": {
-		"@lingui/core": "^5.3.2",
-		"@lingui/react": "^5.3.2",
+		"@lingui/core": "^5.3.3",
+		"@lingui/react": "^5.3.3",
 		"@vitejs/plugin-rsc": "catalog:stable",
 		"react": "catalog:stable",
 		"react-dom": "catalog:stable"
 	},
 	"devDependencies": {
-		"@lingui/babel-plugin-lingui-macro": "^5.3.2",
-		"@lingui/cli": "^5.3.2",
-		"@lingui/conf": "^5.3.2",
-		"@lingui/vite-plugin": "^5.3.2",
+		"@lingui/babel-plugin-lingui-macro": "^5.3.3",
+		"@lingui/cli": "^5.3.3",
+		"@lingui/conf": "^5.3.3",
+		"@lingui/vite-plugin": "^5.3.3",
 		"@types/node": "catalog:",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",

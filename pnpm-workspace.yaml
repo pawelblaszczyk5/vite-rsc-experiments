@@ -7,12 +7,12 @@ packages:
 allowUnusedPatches: false
 
 catalog:
-  "@types/node": ^24.0.10
+  "@types/node": ^24.0.13
   babel-plugin-react-compiler: 19.1.0-rc.2
   commonality: ^0.2.63
   commonality-checks-recommended: ^0.0.40
   typescript: ^5.8.3
-  vite: ^7.0.2
+  vite: ^7.0.4
   vite-plugin-inspect: ^11.3.0
   "@vitejs/plugin-react": ^4.6.0
   "@types/react": ^19.1.8
@@ -25,15 +25,15 @@ catalogs:
   stable:
     react: ^19.1.0
     react-dom: ^19.1.0
-    "@vitejs/plugin-rsc": ^0.4.11
+    "@vitejs/plugin-rsc": ^0.4.12
   canary:
-    react: 19.2.0-canary-5d87cd22-20250704
-    react-dom: 19.2.0-canary-5d87cd22-20250704
-    "@vitejs/plugin-rsc": https://pkg.pr.new/vitejs/vite-plugin-react/@vitejs/plugin-rsc-canary@ac6028d
+    react: 19.2.0-canary-97cdd5d3-20250710
+    react-dom: 19.2.0-canary-97cdd5d3-20250710
+    "@vitejs/plugin-rsc": https://pkg.pr.new/vitejs/vite-plugin-react/@vitejs/plugin-rsc-canary@7881b08
   experimental:
-    react: 0.0.0-experimental-5d87cd22-20250704
-    react-dom: 0.0.0-experimental-5d87cd22-20250704
-    "@vitejs/plugin-rsc": https://pkg.pr.new/vitejs/vite-plugin-react/@vitejs/plugin-rsc-experimental@ac6028d
+    react: 0.0.0-experimental-97cdd5d3-20250710
+    react-dom: 0.0.0-experimental-97cdd5d3-20250710
+    "@vitejs/plugin-rsc": https://pkg.pr.new/vitejs/vite-plugin-react/@vitejs/plugin-rsc-experimental@7881b08
 
 onlyBuiltDependencies:
   - esbuild

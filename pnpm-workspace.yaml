@@ -7,7 +7,7 @@ packages:
 allowUnusedPatches: false
 
 catalog:
-  "@types/node": ^24.0.13
+  "@types/node": ^24.0.14
   babel-plugin-react-compiler: 19.1.0-rc.2
   commonality: ^0.2.63
   commonality-checks-recommended: ^0.0.40
@@ -17,9 +17,9 @@ catalog:
   "@vitejs/plugin-react": ^4.6.0
   "@types/react": ^19.1.8
   "@types/react-dom": ^19.1.6
-  "@stylexjs/babel-plugin": ^0.14.1
-  "@stylexjs/postcss-plugin": ^0.14.1
-  "@stylexjs/stylex": ^0.14.1
+  "@stylexjs/babel-plugin": ^0.14.2
+  "@stylexjs/postcss-plugin": ^0.14.2
+  "@stylexjs/stylex": ^0.14.2
 
 catalogs:
   stable:

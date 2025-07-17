@@ -8,14 +8,7 @@ import {
 	setServerCallback,
 } from "@vitejs/plugin-rsc/browser";
 import { getRscStreamFromHtml } from "@vitejs/plugin-rsc/rsc-html-stream/browser";
-import {
-	unstable_Activity as Activity,
-	startTransition,
-	StrictMode,
-	use,
-	useEffect,
-	useState,
-} from "react";
+import { unstable_Activity as Activity, startTransition, StrictMode, use, useEffect, useState } from "react";
 import { hydrateRoot } from "react-dom/client";
 
 import type { RscPayload } from "#src/framework/entry.rsc.js";
@@ -81,35 +74,38 @@ function listenUrlChange(onUrlChange: (type: "navigate" | "traverse") => void) {
 }
 
 interface NavigationAction {
-	type: "navigation";
+	type: "NAVIGATION";
 	url: string;
 }
 
 interface TraverseAction {
-	type: "traverse";
+	type: "TRAVERSE";
 	url: string;
 }
 
 interface PreloadAction {
-	type: "preload";
+	type: "PRELOAD";
 	url: string;
-}
-
-interface RevalidateAction {
-	type: "revalidation";
 }
 
 interface CallServerAction {
 	args: Array<unknown>;
 	id: string;
-	type: "callServer";
+	reject: (value: unknown) => void;
+	resolve: (value: unknown) => void;
+	type: "CALL_SERVER";
 }
 
 interface HmrAction {
-	type: "hmr";
+	type: "HMR";
 }
 
-type RouterAction = CallServerAction | HmrAction | NavigationAction | PreloadAction | RevalidateAction | TraverseAction;
+interface PatchAction {
+	root: ReactNode;
+	type: "PATCH";
+}
+
+type RouterAction = CallServerAction | HmrAction | NavigationAction | PatchAction | PreloadAction | TraverseAction;
 
 interface RouterState {
 	entries: Array<{ root: ReactNode; url: string }>;
@@ -120,7 +116,8 @@ interface RouterState {
 interface ActionQueueNode {
 	discarded: boolean;
 	payload: RouterAction;
-	resolve: () => void;
+	reject: (error: unknown) => void;
+	resolve: (state: RouterState) => void;
 }
 
 interface ActionQueue {
@@ -129,11 +126,98 @@ interface ActionQueue {
 	state: RouterState;
 }
 
-export const isThenable = <T,>(maybePromise: Promise<T> | T): maybePromise is Promise<T> =>
+const isThenable = <T,>(maybePromise: Promise<T> | T): maybePromise is Promise<T> =>
 	maybePromise !== null
 	&& typeof maybePromise === "object"
 	&& "then" in maybePromise
 	&& typeof maybePromise.then === "function";
+
+const fetchRscPayload = async (url: string) => {
+	const payload = await createFromFetch<RscPayload>(fetch(url));
+
+	return payload;
+};
+
+const actionReducer: (state: RouterState, payload: RouterAction) => Promise<RouterState> | RouterState = async (
+	state,
+	payload,
+) => {
+	switch (payload.type) {
+		case "CALL_SERVER": {
+			const temporaryReferences = createTemporaryReferenceSet();
+
+			try {
+				const result = await createFromFetch<RscPayload>(
+					fetch(state.internalUrl, {
+						body: await encodeReply(payload.args, { temporaryReferences }),
+						headers: { "x-rsc-action": payload.id },
+						method: "POST",
+					}),
+					{ temporaryReferences },
+				);
+
+				payload.resolve(result.returnValue);
+
+				const newEntries = [{ root: result.root, url: state.internalUrl }];
+
+				return { entries: newEntries, externalUrl: state.internalUrl, internalUrl: state.internalUrl };
+			} catch (error) {
+				payload.reject(error);
+
+				return state;
+			}
+		}
+		case "HMR": {
+			try {
+				const result = await fetchRscPayload(state.internalUrl);
+
+				const newEntries = state.entries.filter((entry) => entry.url !== state.internalUrl);
+
+				newEntries.push({ root: result.root, url: state.internalUrl });
+
+				return { entries: newEntries, externalUrl: state.internalUrl, internalUrl: state.internalUrl };
+			} catch {
+				return state;
+			}
+		}
+		case "NAVIGATION": {
+			try {
+				const result = await fetchRscPayload(payload.url);
+
+				const newEntries = state.entries.filter((entry) => entry.url !== payload.url);
+
+				newEntries.push({ root: result.root, url: payload.url });
+
+				return { entries: newEntries, externalUrl: payload.url, internalUrl: payload.url };
+			} catch {
+				return state;
+			}
+		}
+		case "PRELOAD": {
+			try {
+				const result = await fetchRscPayload(payload.url);
+
+				const newEntries = state.entries.filter((entry) => entry.url !== payload.url);
+
+				newEntries.push({ root: result.root, url: payload.url });
+
+				return { entries: newEntries, externalUrl: state.externalUrl, internalUrl: state.internalUrl };
+			} catch {
+				return state;
+			}
+		}
+		case "TRAVERSE": {
+			return { entries: state.entries, externalUrl: payload.url, internalUrl: payload.url };
+		}
+		case "PATCH": {
+			const newEntries = state.entries.filter((entry) => entry.url !== state.internalUrl);
+
+			newEntries.push({ root: payload.root, url: state.internalUrl });
+
+			return { entries: newEntries, externalUrl: state.externalUrl, internalUrl: state.internalUrl };
+		}
+	}
+};
 
 const createActionQueue = (initialState: RouterState) => {
 	const actionQueue: ActionQueue = {
@@ -142,23 +226,47 @@ const createActionQueue = (initialState: RouterState) => {
 
 			if (previousNode) {
 				previousNode.discarded = true;
+			}
+
+			let resolvers: Pick<ActionQueueNode, "reject" | "resolve"> = {
+				reject: () => {
+					// Synchronous action can't reject
+				},
+				resolve: setState,
 			};
 
-			let resolve = setState;
+			if (payload.type !== "TRAVERSE") {
+				const deferred = Promise.withResolvers<RouterState>();
 
-			if (payload.type !== 'traverse') {
-				
+				resolvers = { reject: deferred.reject, resolve: deferred.resolve };
+
+				startTransition(() => {
+					setState(deferred.promise);
+				});
 			}
 
-			actionQueue.pending = {
-				discarded: false,
-				payload,
-			}
+			actionQueue.pending = { discarded: false, payload, reject: resolvers.reject, resolve: resolvers.resolve };
 
 			const currentNode = actionQueue.pending;
 
+			const handleResult = (nextState: RouterState) => {
+				if (currentNode.discarded) {
+					return;
+				}
 
+				actionQueue.state = nextState;
+				currentNode.resolve(nextState);
+			};
 
+			const result = actionReducer(actionQueue.state, payload);
+
+			if (isThenable(result)) {
+				result.then(handleResult).catch(currentNode.reject);
+
+				return;
+			}
+
+			handleResult(result);
 		},
 		pending: null,
 		state: initialState,
@@ -190,7 +298,7 @@ const useRouterState = (actionQueue: ActionQueue) => {
 };
 
 const main = async () => {
-	const url = globalThis.location.href;
+	const url = globalThis.location.pathname + globalThis.location.search;
 	const initialPayload = await createFromReadableStream<RscPayload>(getRscStreamFromHtml());
 
 	const actionQueue = createActionQueue({
@@ -208,14 +316,26 @@ const main = async () => {
 					const url = globalThis.location.pathname + globalThis.location.search;
 
 					if (type === "navigate") {
-						dispatchRouterAction({ type: "navigation", url });
+						dispatchRouterAction({ type: "NAVIGATION", url });
 						return;
 					}
 
-					dispatchRouterAction({ type: "traverse", url });
+					dispatchRouterAction({ type: "TRAVERSE", url });
 				}),
 			[],
 		);
+
+		const currentEntry = state.entries.find((entry) => entry.url === state.internalUrl);
+
+		if (!currentEntry) {
+			const patchPromise = fetchRscPayload(state.internalUrl).then((result) => {
+				dispatchRouterAction({ root: result.root, type: "PATCH" });
+
+				return;
+			});
+
+			use(patchPromise);
+		}
 
 		return state.entries.map((entry) => (
 			<Activity key={entry.url} mode={entry.url === state.internalUrl ? "visible" : "hidden"}>
@@ -224,9 +344,12 @@ const main = async () => {
 		));
 	};
 
-	setServerCallback(async (id, args) => {
-		dispatchRouterAction({ args, id, type: "callServer" });
-	});
+	setServerCallback(
+		async (id, args) =>
+			new Promise((resolve, reject) => {
+				dispatchRouterAction({ args, id, reject, resolve, type: "CALL_SERVER" });
+			}),
+	);
 
 	const browserRoot = (
 		<StrictMode>
@@ -238,7 +361,7 @@ const main = async () => {
 
 	if (import.meta.hot) {
 		import.meta.hot.on("rsc:update", () => {
-			dispatchRouterAction({ type: "hmr" });
+			dispatchRouterAction({ type: "HMR" });
 		});
 	}
 };

@@ -17,6 +17,7 @@ const App = () => (
 			</a>
 		</div>
 		<h1>Vite + RSC!!!</h1>
+		<a href="/test">Test</a>
 		<div className="card">
 			<ClientCounter />
 		</div>

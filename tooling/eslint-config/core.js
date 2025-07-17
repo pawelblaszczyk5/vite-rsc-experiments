@@ -243,6 +243,7 @@ export default tseslint.config(
 				"error",
 				{
 					allowList: {
+						args: true,
 						rel: true,
 						Params: true,
 						params: true,

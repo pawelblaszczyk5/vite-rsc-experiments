@@ -108,7 +108,7 @@ interface PatchAction {
 type RouterAction = CallServerAction | HmrAction | NavigationAction | PatchAction | PreloadAction | TraverseAction;
 
 interface RouterState {
-	entries: Array<{ root: ReactNode; url: string }>;
+	entries: Array<{ pendingRevalidation: boolean; root: ReactNode; url: string }>;
 	externalUrl: string;
 	internalUrl: string;
 }
@@ -158,7 +158,11 @@ const actionReducer: (state: RouterState, payload: RouterAction) => Promise<Rout
 
 				payload.resolve(result.returnValue);
 
-				const newEntries = [{ root: result.root, url: state.internalUrl }];
+				const newEntries = state.entries
+					.filter((entry) => entry.url !== state.internalUrl)
+					.map((entry) => ({ ...entry, pendingRevalidation: true }));
+
+				newEntries.push({ pendingRevalidation: false, root: result.root, url: state.internalUrl });
 
 				return { entries: newEntries, externalUrl: state.internalUrl, internalUrl: state.internalUrl };
 			} catch (error) {
@@ -173,7 +177,7 @@ const actionReducer: (state: RouterState, payload: RouterAction) => Promise<Rout
 
 				const newEntries = state.entries.filter((entry) => entry.url !== state.internalUrl);
 
-				newEntries.push({ root: result.root, url: state.internalUrl });
+				newEntries.push({ pendingRevalidation: false, root: result.root, url: state.internalUrl });
 
 				return { entries: newEntries, externalUrl: state.internalUrl, internalUrl: state.internalUrl };
 			} catch {
@@ -186,7 +190,7 @@ const actionReducer: (state: RouterState, payload: RouterAction) => Promise<Rout
 
 				const newEntries = state.entries.filter((entry) => entry.url !== payload.url);
 
-				newEntries.push({ root: result.root, url: payload.url });
+				newEntries.push({ pendingRevalidation: false, root: result.root, url: payload.url });
 
 				return { entries: newEntries, externalUrl: payload.url, internalUrl: payload.url };
 			} catch {
@@ -199,7 +203,7 @@ const actionReducer: (state: RouterState, payload: RouterAction) => Promise<Rout
 
 				const newEntries = state.entries.filter((entry) => entry.url !== payload.url);
 
-				newEntries.push({ root: result.root, url: payload.url });
+				newEntries.push({ pendingRevalidation: false, root: result.root, url: payload.url });
 
 				return { entries: newEntries, externalUrl: state.externalUrl, internalUrl: state.internalUrl };
 			} catch {
@@ -212,7 +216,7 @@ const actionReducer: (state: RouterState, payload: RouterAction) => Promise<Rout
 		case "PATCH": {
 			const newEntries = state.entries.filter((entry) => entry.url !== state.internalUrl);
 
-			newEntries.push({ root: payload.root, url: state.internalUrl });
+			newEntries.push({ pendingRevalidation: false, root: payload.root, url: state.internalUrl });
 
 			return { entries: newEntries, externalUrl: state.externalUrl, internalUrl: state.internalUrl };
 		}
@@ -302,7 +306,7 @@ const main = async () => {
 	const initialPayload = await createFromReadableStream<RscPayload>(getRscStreamFromHtml());
 
 	const actionQueue = createActionQueue({
-		entries: [{ root: initialPayload.root, url }],
+		entries: [{ pendingRevalidation: false, root: initialPayload.root, url }],
 		externalUrl: url,
 		internalUrl: url,
 	});
@@ -328,11 +332,17 @@ const main = async () => {
 		const currentEntry = state.entries.find((entry) => entry.url === state.internalUrl);
 
 		if (!currentEntry) {
+			throw new Error("Entry must always exist for a given URL");
+		}
+
+		if (currentEntry.pendingRevalidation) {
 			const patchPromise = fetchRscPayload(state.internalUrl).then((result) => {
 				dispatchRouterAction({ root: result.root, type: "PATCH" });
 
 				return;
 			});
+
+			currentEntry.pendingRevalidation = false;
 
 			use(patchPromise);
 		}

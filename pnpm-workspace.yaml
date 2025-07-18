@@ -12,9 +12,9 @@ catalog:
   commonality: ^0.2.63
   commonality-checks-recommended: ^0.0.40
   typescript: ^5.8.3
-  vite: ^7.0.4
+  vite: ^7.0.5
   vite-plugin-inspect: ^11.3.0
-  "@vitejs/plugin-react": ^4.6.0
+  "@vitejs/plugin-react": ^4.7.0
   "@types/react": ^19.1.8
   "@types/react-dom": ^19.1.6
   "@stylexjs/babel-plugin": ^0.14.2

@@ -1,12 +1,12 @@
 {
-	"name": "@vite-rsc-experiments/with-sourcemap",
+	"name": "@vite-rsc-experiments/with-sourcemaps",
 	"version": "0.0.1",
 	"private": true,
 	"description": "Example of sourcemaps",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/pawelblaszczyk5/vite-rsc-experiments",
-		"directory": "apps/with-sourcemap"
+		"directory": "apps/with-sourcemaps"
 	},
 	"sideEffects": false,
 	"type": "module",

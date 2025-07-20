@@ -6,7 +6,7 @@
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/pawelblaszczyk5/vite-rsc-experiments",
-		"directory": "apps/with-sourcemaps"
+		"directory": "apps/with-sourcemap"
 	},
 	"sideEffects": false,
 	"type": "module",

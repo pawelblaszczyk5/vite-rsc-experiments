@@ -3,7 +3,7 @@ import { Suspense } from "react";
 
 import { getServerCounter, updateServerCounter } from "#src/action.js";
 import reactLogo from "#src/assets/react.svg";
-import { PromiseNumberDisplay } from "#src/client.js";
+import { ErrorBoundary, PromiseNumberDisplay } from "#src/client.js";
 
 import "#src/index.css";
 
@@ -13,6 +13,12 @@ const getSuccessfulPromiseWithRandomNumber = async (delay = 1_000) => {
 	await setTimeout(delay);
 
 	return Math.round(Math.random() * 1_000);
+};
+
+const getFailingPromise = async (delay = 1_000) => {
+	await setTimeout(delay);
+
+	throw new Error("Fail oops");
 };
 
 const App = async () => (
@@ -35,6 +41,11 @@ const App = async () => (
 			<Suspense fallback={<p>Loading...</p>}>
 				<PromiseNumberDisplay promise={getSuccessfulPromiseWithRandomNumber()} />
 			</Suspense>
+			<ErrorBoundary fallback={<p>Oops 💣</p>}>
+				<Suspense fallback={<p>Loading...</p>}>
+					<PromiseNumberDisplay promise={getFailingPromise()} />
+				</Suspense>
+			</ErrorBoundary>
 		</div>
 		<ul className="read-the-docs">
 			<li>

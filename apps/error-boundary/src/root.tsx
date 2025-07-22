@@ -15,7 +15,7 @@ const getSuccessfulPromiseWithRandomNumber = async (delay = 1_000) => {
 	return Math.round(Math.random() * 1_000);
 };
 
-const App = () => (
+const App = async () => (
 	<div id="root">
 		<div>
 			<a href="https://vite.dev" target="_blank">

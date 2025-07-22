@@ -7,9 +7,6 @@ import { renderToReadableStream } from "react-dom/server.edge";
 
 import type { RscPayload } from "#src/framework/entry.rsc.js";
 
-// eslint-disable-next-line react-refresh/only-export-components -- I don't care
-const SsrUseWorkaround = async (props: React.PropsWithChildren) => props.children;
-
 export const renderHTML = async (
 	rscStream: ReadableStream<Uint8Array>,
 	options: { debugNojs?: boolean; formState?: ReactFormState | undefined; nonce?: string },
@@ -18,13 +15,14 @@ export const renderHTML = async (
 
 	let payload: Promise<RscPayload>;
 
+	// eslint-disable-next-line @typescript-eslint/promise-function-async -- that can't be async
 	const SsrRoot = () => {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- this will suspend so it's valid that this will be reassigned
 		payload ??= createFromReadableStream<RscPayload>(rscStream1);
 
 		const root = use(payload).root;
 
-		return <SsrUseWorkaround>{root}</SsrUseWorkaround>;
+		return root;
 	};
 
 	const bootstrapScriptContent = await import.meta.viteRsc.loadBootstrapScriptContent("index");

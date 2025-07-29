@@ -28,7 +28,7 @@
 		"update-dependencies": "taze major --write --interactive --recursive --includeLocked --force"
 	},
 	"devDependencies": {
-		"@cspell/dict-pl_pl": "^3.0.5",
+		"@cspell/dict-pl_pl": "^3.0.6",
 		"@vite-rsc-experiments/commonality": "workspace:0.0.1",
 		"commonality": "catalog:",
 		"commonality-checks-recommended": "catalog:",

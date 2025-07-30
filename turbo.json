@@ -8,7 +8,7 @@
 		"build": { "dependsOn": ["^build"], "outputs": ["dist/**"] },
 		"typecheck": { "dependsOn": ["^transit", "^build"] },
 		"dev": { "dependsOn": [], "cache": false },
-		"preview": { "dependsOn": [], "cache": false },
+		"preview": { "dependsOn": ["build"], "cache": false },
 		"//#format": { "dependsOn": [] },
 		"//#format:fix": { "dependsOn": [], "cache": false },
 		"//#sort-package-json": { "inputs": ["**/package.json"], "dependsOn": [] },

@@ -19,7 +19,6 @@
 		"format:fix": "prettier \".\" --write",
 		"lint": "turbo run lint",
 		"lint:fix": "turbo run lint:fix",
-		"prepreview": "turbo run build",
 		"preview": "turbo run preview",
 		"sort-package-json": "sort-package-json \"package.json\" \"{packages,tooling,apps}/*/package.json\" --check",
 		"sort-package-json:fix": "sort-package-json \"package.json\" \"{packages,tooling,apps}/*/package.json\"",

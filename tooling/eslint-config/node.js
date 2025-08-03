@@ -18,5 +18,5 @@ export default tseslint.config(n.configs["flat/recommended"], {
 		"n/prefer-promises/dns": "error",
 		"n/prefer-promises/fs": "error",
 	},
-	settings: { node: { version: "24.3.0" } },
+	settings: { node: { version: "24.5.0" } },
 });

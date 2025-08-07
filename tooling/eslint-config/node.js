@@ -10,10 +10,7 @@ export default tseslint.config(n.configs["flat/recommended"], {
 		"n/no-path-concat": "error",
 		"n/no-process-env": "error",
 		"n/no-unsupported-features/es-builtins": ["error", { ignores: [] }],
-		"n/no-unsupported-features/node-builtins": [
-			"error",
-			{ ignores: ["ReadableStreamDefaultController", "ReadableStream", "URL.createObjectURL", "navigator"] },
-		],
+		"n/no-unsupported-features/node-builtins": ["error", { ignores: ["ReadableStream"] }],
 		"n/prefer-global/buffer": "error",
 		"n/prefer-promises/dns": "error",
 		"n/prefer-promises/fs": "error",
